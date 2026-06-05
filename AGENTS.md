@@ -20,9 +20,10 @@ When the user says they want to study CUDA through interactive questions:
    - date
    - topic
    - 10 questions
-   - user's answers
-   - corrections
+   - explanations
+   - correct answers
    - summary
+8. Do not save the user's original answers in the daily record.
 
 ## 每日 CUDA 交互问答学习模式
 
@@ -44,6 +45,7 @@ When the user says they want to study CUDA through interactive questions:
    - 日期
    - 主题
    - 10 个问题
-   - 用户回答
-   - 修正说明
+   - 解说
+   - 正确答案
    - 总结
+8. 每日记录中不保存用户的原始回答。
