@@ -8,6 +8,18 @@
 
 ---
 
+## 🎯 目标 (Goal)
+
+我用这个仓库把对 CUDA 和 AI Infra 的兴趣，慢慢变成看得见的工程证据。
+
+找工作的目标当然在，但这里的规则更简单：少写空泛笔记，多留下能运行的实验、benchmark 和 profiling 记录。
+
+I use this repo to turn my interest in CUDA and AI infrastructure into visible engineering evidence.
+
+The job goal is there, but the rule here is simple: less empty note-taking, more runnable experiments, benchmarks, and profiling traces.
+
+---
+
 ## 💻 实验环境 (Infrastructure Setup)
 * **OS**: Ubuntu 26.04 LTS
 * **CUDA Toolkit**: 13.3
