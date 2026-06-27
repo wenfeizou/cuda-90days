@@ -1,0 +1,20 @@
+CompileFlags:
+  Add:
+    - -std=c++23
+    - -I/usr/local/cuda/include
+    - -I/usr/include/c++/15
+    - -I/usr/include/x86_64-linux-gnu/c++/15
+  Remove:
+    - -gencode*
+    - --generate-code*
+    - -forward-unknown-to-host-compiler
+    - -arch=*
+
+---
+If:
+  PathMatch: .*\.cu
+CompileFlags:
+  Add:
+    - --cuda-path=/usr/local/cuda
+    - -xcuda
+    - --cuda-gpu-arch=sm_80
