@@ -1,0 +1,25 @@
+{
+  "files.associations": {
+    "*.cu": "cuda-cpp",
+    "*.cuh": "cuda-cpp"
+  },
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "[cuda-cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "cmake.generator": "Ninja",
+  "cmake.configureOnOpen": true,
+  "cmake.buildDirectory": "${workspaceFolder}/build",
+  "cmake.copyCompileCommands": "${workspaceFolder}/compile_commands.json",
+  "clangd.arguments": [
+    "--background-index",
+    "--compile-commands-dir=${workspaceFolder}/build",
+    "--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/local/cuda/bin/nvcc"
+  ],
+  "clang-format.executable": "/home/luca/.cursor/extensions/anysphere.cpptools-2.0.2-linux-x64/LLVM/bin/clang-format",
+  "clang-format.language.cuda.enable": true
+}

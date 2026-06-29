@@ -106,11 +106,8 @@ bool check_result(const std::vector<float> &got,
 using KernelFn = void (*)(const float *, float *, int, int);
 
 float run_kernel(const std::string &name, KernelFn kernel, const float *d_in,
-                 float *d_out, int width, int height, int iterations) {
-  dim3 block(kTileDim, kBlockRows);
-  dim3 grid((width + kTileDim - 1) / kTileDim,
-            (height + kTileDim - 1) / kTileDim);
-
+                 float *d_out, int width, int height, dim3 block, dim3 grid,
+                 int iterations) {
   for (int i = 0; i < 5; ++i) {
     kernel<<<grid, block>>>(d_in, d_out, width, height);
   }
@@ -160,12 +157,20 @@ void benchmark_case(int width, int height, int iterations) {
   struct KernelCase {
     const char *name;
     KernelFn fn;
+    dim3 block;
+    dim3 grid;
   };
 
+  const dim3 shared_block(kTileDim, kBlockRows);
+  const dim3 shared_grid((width + kTileDim - 1) / kTileDim,
+                         (height + kTileDim - 1) / kTileDim);
+  const dim3 naive_block(32, 32);
+  const dim3 naive_grid((width + 31) / 32, (height + 31) / 32);
+
   const KernelCase kernels[] = {
-      {"naive", transpose_naive},
-      {"shared_32x32", transpose_shared_32x32},
-      {"shared_32x33", transpose_shared_32x33},
+      {"naive", transpose_naive, naive_block, naive_grid},
+      {"shared_32x32", transpose_shared_32x32, shared_block, shared_grid},
+      {"shared_32x33", transpose_shared_32x33, shared_block, shared_grid},
   };
 
   std::cout << "\nMatrix: " << width << " x " << height
@@ -177,7 +182,7 @@ void benchmark_case(int width, int height, int iterations) {
   for (const auto &entry : kernels) {
     CUDA_CHECK(cudaMemset(d_out, 0, bytes));
     float avg_ms = run_kernel(entry.name, entry.fn, d_in, d_out, width, height,
-                              iterations);
+                              entry.block, entry.grid, iterations);
     CUDA_CHECK(cudaMemcpy(h_out.data(), d_out, bytes, cudaMemcpyDeviceToHost));
 
     bool ok = check_result(h_out, h_expected);

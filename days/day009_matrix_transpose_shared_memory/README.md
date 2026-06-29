@@ -10,7 +10,9 @@ Date: 2026-06-15
 
 ```text
 kernels/cuda_cpp/matrix_transpose/
-├── Makefile
+├── CMakeLists.txt
+├── .gitignore
+├── .vscode/
 └── transpose_bench.cu
 ```
 
@@ -58,14 +60,16 @@ stride 33 会让一个 warp 的访问分散到不同 bank，从而减少 bank co
 
 ```bash
 cd kernels/cuda_cpp/matrix_transpose
-make
+cmake -S . -B build -G Ninja
+cmake --build build
 ```
 
 当前环境编译结果：
 
 ```text
-nvcc -O3 -std=c++17 -arch=native transpose_bench.cu -o transpose_bench
-nvcc warning : Cannot find valid GPU for '-arch=native', default arch is used
+cmake --build build
+# nvcc -O3 -std=c++23 -arch=native ...
+# nvcc warning : Cannot find valid GPU for '-arch=native', default arch is used
 ```
 
 结论：代码可以通过 `nvcc` 编译。
@@ -74,7 +78,9 @@ nvcc warning : Cannot find valid GPU for '-arch=native', default arch is used
 
 ```bash
 cd kernels/cuda_cpp/matrix_transpose
-./transpose_bench 50
+cmake --build build --target run
+# 或
+./build/matrix_transpose 50
 ```
 
 当前环境运行结果：
@@ -137,9 +143,10 @@ out[x * height + y] = in[y * width + x];
 
 ```bash
 cd kernels/cuda_cpp/matrix_transpose
-make clean
-make
-./transpose_bench 100
+rm -rf build
+cmake -S . -B build -G Ninja
+cmake --build build
+./build/matrix_transpose 100
 ```
 
 然后记录类似表格：
